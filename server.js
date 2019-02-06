@@ -28,7 +28,7 @@ const database = {
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-  res.send('this is working')
+  res.json(database.users)
 })
 
 app.post('/signin', (req, res) => {
