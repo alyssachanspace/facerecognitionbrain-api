@@ -1,0 +1,16 @@
+{
+  "name": "facerecognitionbrain-api",
+  "version": "1.0.0",
+  "description": "API for face recognition brain project",
+  "main": "script.js",
+  "repository": "https://github.com/alyssachanspace/facerecognitionbrain-api",
+  "author": "Alyssa Chan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
