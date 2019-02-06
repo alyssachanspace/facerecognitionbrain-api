@@ -1,4 +1,6 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+
 
 const app = express()
 
@@ -23,12 +25,17 @@ const database = {
   ]
 }
 
+app.use(bodyParser.json())
+
 app.get('/', (req, res) => {
   res.send('this is working')
 })
 
 app.post('/signin', (req, res) => {
-  res.json('signing in')
+  (req.body.email === database.users[0].email &&
+    req.body.password === database.users[0].password)
+    ? res.json('success')
+    : res.status(400).json('error logging in')
 })
 
 app.listen(3000, () => {
