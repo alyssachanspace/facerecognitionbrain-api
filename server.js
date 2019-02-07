@@ -1,8 +1,8 @@
 const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-
-const app = express()
+const bcrypt = require('bcrypt-nodejs')
 
 const database = {
   users: [
@@ -10,7 +10,6 @@ const database = {
       id: '123',
       name: 'John',
       email: 'john@gmail.com',
-      password: 'cookies',
       entries: 0,
       joined: new Date()
     },
@@ -18,25 +17,31 @@ const database = {
       id: '124',
       name: 'Sally',
       email: 'sally@gmail.com',
-      password: 'bananas',
       entries: 0,
       joined: new Date()
+    }
+  ],
+  secrets: [
+    {
+      users_id: '123',
+      hash: '$2a$10$nIdgWgM6WKczDlv8x3le8uHO9nZvlvw6RAc8EN.Cn5U2tkADQThoS'
+    },
+    {
+      users_id: '124',
+      hash: '$2a$10$cbL1IhrR7C/uc7rprWW/HePT3pkZx8rVC1zJ.as.RWRyTPvCKVFV.'
     }
   ]
 }
 
-app.use(bodyParser.json())
 app.use(cors())
-
-app.get('/', (req, res) => {
-  res.json(database.users)
-})
+app.use(bodyParser.json())
+app.get('/', (req, res) => res.send('Face Recognition Brain'))
 
 app.post('/signin', (req, res) => {
   (req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password)
+    bcrypt.compareSync(req.body.password, database.secrets[0].hash))
     ? res.json(database.users[0])
-    : res.status(400).json('error logging in')
+    : res.status(400).json('access denied')
 })
 
 app.post('/register', (req, res) => {
@@ -45,10 +50,16 @@ app.post('/register', (req, res) => {
     id: '125',
     name: name,
     email: email,
+    password: bcrypt.hashSync(password),
     entries: 0,
     joined: new Date()
   })
-  res.json(database.users[database.users.length-1])
+  database.secrets.push({
+    users_id: '125',
+    hash: bcrypt.hashSync(password)
+  })
+  res.json(database.users[database.users.length - 1])
+  res.json(database.secrets[database.secrets.length - 1])
 })
 
 app.get('/profile/:id', (req, res) => {
