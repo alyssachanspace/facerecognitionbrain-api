@@ -5,8 +5,9 @@ const cors = require('cors')
 const bcrypt = require('bcrypt-nodejs')
 const knex = require('knex')
 
-const signin = require('./controllers/signin')
 const register = require('./controllers/register')
+const signin = require('./controllers/signin')
+const profile = require('./controllers/profile')
 
 const db = knex({
   client: 'pg',
@@ -22,20 +23,11 @@ app.use(cors())
 app.use(bodyParser.json())
 app.get('/', (req, res) => res.send('Face Recognition Brain'))
 
-app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)})
-
 app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
 
-app.get('/profile/:id', (req, res) => {
-  const { id } = req.params
-  db.select('*').from('users').where({id})
-    .then(user => {
-      user.length
-      ? res.json(user[0])
-      : res.status(400).json('Not found')
-    })
-    .catch(err => res.status(400).json('unable to get user'))
-})
+app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)})
+
+app.get('/profile/:id', (req, res) => {profile.handleProfileGet(req, res, db)})
 
 app.put('/image', (req, res) => {
   const { id } = req.body
