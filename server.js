@@ -24,10 +24,10 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => res.send('Face Recognition Brain'))
-app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
-app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)})
-app.get('/profile/:id', (req, res) => {profile.handleProfileGet(req, res, db)})
-app.put('/image', (req, res) => {image.handleImage(req, res, db)})
+app.post('/register', register.handleRegister(db, bcrypt))
+app.post('/signin', signin.handleSignin(db, bcrypt))
+app.get('/profile/:id', profile.handleProfileGet(db))
+app.put('/image', image.handleImage(db))
 
 app.listen(3000, () => {
   console.log('app is running on port 3000')
