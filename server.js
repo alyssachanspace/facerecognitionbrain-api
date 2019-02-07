@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const cors = require('cors')
 
 const app = express()
 
@@ -26,6 +26,7 @@ const database = {
 }
 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.json(database.users)
@@ -44,7 +45,6 @@ app.post('/register', (req, res) => {
     id: '125',
     name: name,
     email: email,
-    password: password,
     entries: 0,
     joined: new Date()
   })
