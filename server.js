@@ -83,22 +83,16 @@ app.get('/profile/:id', (req, res) => {
       ? res.json(user[0])
       : res.status(400).json('Not found')
     })
-    .catch(err => res.status(400).json('error getting user'))
+    .catch(err => res.status(400).json('unable to get user'))
 })
 
 app.put('/image', (req, res) => {
   const { id } = req.body
-  let found = false
-  database.users.map(user => {
-    if (user.id === id) {
-      found = true
-      user.entries++
-      res.json(user.entries)
-    }
-  })
-  if (!found) {
-    res.status(404).json('not found')
-  }
+  db('users').where('id', '=', id)
+    .increment('entries', 1)
+    .returning('entries')
+    .then(entries => res.json(entries[0]))
+    .catch(err => res.status(400).json('unable to get entries'))
 })
 
 app.listen(3000, () => {
