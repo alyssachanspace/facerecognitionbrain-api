@@ -15,35 +15,6 @@ const db = knex({
   }
 })
 
-const database = {
-  users: [
-    {
-      id: '123',
-      name: 'John',
-      email: 'john@gmail.com',
-      entries: 0,
-      joined: new Date()
-    },
-    {
-      id: '124',
-      name: 'Sally',
-      email: 'sally@gmail.com',
-      entries: 0,
-      joined: new Date()
-    }
-  ],
-  login: [
-    {
-      id: '123',
-      hash: '$2a$10$nIdgWgM6WKczDlv8x3le8uHO9nZvlvw6RAc8EN.Cn5U2tkADQThoS'
-    },
-    {
-      id: '124',
-      hash: '$2a$10$cbL1IhrR7C/uc7rprWW/HePT3pkZx8rVC1zJ.as.RWRyTPvCKVFV.'
-    }
-  ]
-}
-
 app.use(cors())
 app.use(bodyParser.json())
 app.get('/', (req, res) => res.send('Face Recognition Brain'))
